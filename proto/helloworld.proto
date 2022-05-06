@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+//option go_package = "path;name";
+//path 表示生成的go文件的存放地址，会自动生成目录的。
+//name 表示生成的go文件所属的包名
+option go_package = ".;proto";
+// 定义包名
+package proto;
+
+import "google/api/annotations.proto";
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply)  {
+    option (google.api.http) = {
+      // 定义一个 GET 接口，并且把 name 映射到 HelloRequest
+      get: "/helloworld/{name}",
+      // 可以添加附加接口
+      additional_bindings {
+        // 定义一个 POST 接口，并且把 body 映射到 HelloRequest
+        post: "/v1/greeter/say_hello",
+        body: "*",
+      }
+    };
+  }
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
